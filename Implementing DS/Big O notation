@@ -1,0 +1,13 @@
+Big O notation:
+1. Accessing item by index in array: This is constant time O(1) because the operation only consists of looking at a single spot of an indexed array and then returning what is found there which is either a pointer to another object whose value is returned, or null, or array out of bounds exception.
+2. Unshifting new item into beginning of array: O(n) linear time because the entire array will need to be rebuilt since there will be a new item being inserted.
+3. Pushing item onto end of array: O(n) linear time because the entire array will need to be rebuilt in order to make a change to the array size.
+4. Upcasing a string: O(n) linear time because you just go through each element of the string, and write it as a capitalized version of that element.
+5. Reversing a String: O(n)because you're essentially just rebuilding the array by iterating through it in reverse. (rebuilding/iterating through each element of array is O(n) while writing or reading any element is O(1). 
+6. Enumerable#each method: O(n) to iterate through each element of the method. O(1) to read that element and compare it with the block given. Therefore it is O(n) linear time.
+7. Enumerable #include?: O(n) linear time, iterates through the number of elements until a comparison returns true. the comparison itself involves reading the element and comparing it with the given block which is O(1) therefore whole thing is just O(n).
+8. Finding Max of an array: O(n) to iterate through each element of the array, O(1) to store/compare it with the largest element currently found. therefore it is still O(n) linear time.
+9. Splitting a string: Iterate through whole array O(n) time. Create new subarrays and then store shit into it: creation of the sub arrays is O(n) while writing is O(1) so it is O(n^2).
+10. Inserting value into hash: iterate through linked list to find bucket O(logn), rebuild that subarray with inserted value O(n) so it is O(n log(n)).
+11. Retrieving keys of hash using .keys method which returns an array of all the keys: Iterate through linked list of keys O(log (n)). Build array and insert value of keys into it: O(n) so it is O(n log(n)).
+
