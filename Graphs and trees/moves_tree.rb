@@ -11,118 +11,57 @@ class MoveTree
 	def initialize(array, max_depth)
 		#x and y are the coords of the starting value
 		@max_depth = max_depth
-		@root = Move.new(array[0] - 1, array[1] - 1, @max_depth, [], nil)
-		@movesarray = []
+		@nodes_counter = 1
+		@root = Move.new(array[0] - 1, array[1] - 1, 0, [], nil) #array values are adjusted to match indices which start from 0 not 1
+		buildTree(@root)
 	end
 
-	def buildTree
-		@movesarray = [@root]
-		counter = 1
-		@movesChecked = 0
-		while counter <= @max_depth
-			if counter == 1
-				@currentMove = @root
-				if @currentMove.x - 1 >= 0 
-					if @currentMove.y + 2 <= 7
-						@currentMove.children << Move.new(@currentMove.x - 1, @currentMove.y + 2, counter, [], @currentMove)
-						@movesarray << Move.new(@currentMove.x - 1, @currentMove.y + 2, counter, [], @currentMove)
-					end
-					if @currentMove.y - 2 >= 0
-						@currentMove.children << Move.new(@currentMove.x - 1, @currentMove.y - 2, counter, [], @currentMove)
-						@movesarray << Move.new(@currentMove.x - 1, @currentMove.y - 2, counter, [], @currentMove)
-					end
-				end
-				if @currentMove.x + 1 <= 7 
-					if @currentMove.y + 2 <= 7
-						@currentMove.children << Move.new(@currentMove.x + 1, @currentMove.y + 2, counter, [], @currentMove)
-						@movesarray << Move.new(@currentMove.x + 1, @currentMove.y + 2, counter, [], @currentMove)
-					end
-					if @currentMove.y - 2 >= 0
-						@currentMove.children << Move.new(@currentMove.x + 1, @currentMove.y - 2, counter, [], @currentMove)
-						@movesarray << Move.new(@currentMove.x + 1, @currentMove.y - 2, counter, [], @currentMove)
-					end
-				end 
-				if @currentMove.x - 2 >= 0 
-					if @currentMove.y + 1 <= 7
-						@currentMove.children << Move.new(@currentMove.x - 2, @currentMove.y + 1, counter, [], @currentMove)
-						@movesarray << Move.new(@currentMove.x - 2, @currentMove.y + 1, counter, [], @currentMove)
-					end
-					if @currentMove.y - 1 >= 0
-						@currentMove.children << Move.new(@currentMove.x - 2, @currentMove.y - 1, counter, [], @currentMove)
-						@movesarray << Move.new(@currentMove.x - 2, @currentMove.y - 1, counter, [], @currentMove)
-					end
-				end
-				if @currentMove.x + 2 <= 7 
-					if @currentMove.y + 1 <= 7
-						@currentMove.children << Move.new(@currentMove.x + 2, @currentMove.y + 1, counter, [], @currentMove)
-						@movesarray << Move.new(@currentMove.x + 2, @currentMove.y + 1, counter, [], @currentMove)
-					end
-					if @currentMove.y - 1 >= 0
-						@currentMove.children << Move.new(@currentMove.x + 2, @currentMove.y - 1, counter, [], @currentMove)
-						@movesarray << Move.new(@currentMove.x + 2, @currentMove.y - 1, counter, [], @currentMove)
-					end
-				end
-				@movesChecked += 1
-				counter  += 1
-				next
-			else
-				@iterateFrom = (@movesChecked)
-				@iterateTo = @movesarray.length - 1
-				for i in @iterateFrom..(@iterateTo)
-					@currentMove = @movesarray[i]
-					if @currentMove.x - 1 >= 0 	
-						if @currentMove.y + 2 <= 7
-							@currentMove.children << Move.new(@currentMove.x - 1, @currentMove.y + 2, counter, [], @currentMove)
-							@movesarray << Move.new(@currentMove.x - 1, @currentMove.y + 2, counter, [], @currentMove)
-						end
-						if @currentMove.y - 2 >= 0
-							@currentMove.children << Move.new(@currentMove.x - 1, @currentMove.y - 2, counter, [], @currentMove)
-							@movesarray << Move.new(@currentMove.x - 1, @currentMove.y - 2, counter, [], @currentMove)
-						end
-					end
-					if @currentMove.x + 1 <= 7 
-						if @currentMove.y + 2 <= 7
-							@currentMove.children << Move.new(@currentMove.x + 1, @currentMove.y + 2, counter, [], @currentMove)
-							@movesarray << Move.new(@currentMove.x + 1, @currentMove.y + 2, counter, [], @currentMove)
-						end
-						if @currentMove.y - 2 >= 0
-							@currentMove.children << Move.new(@currentMove.x + 1, @currentMove.y - 2, counter, [], @currentMove)
-							@movesarray << Move.new(@currentMove.x + 1, @currentMove.y - 2, counter, [], @currentMove)
-						end
-					end 
-					if @currentMove.x - 2 >= 0 
-						if @currentMove.y + 1 <= 7
-							@currentMove.children << Move.new(@currentMove.x - 2, @currentMove.y + 1, counter, [], @currentMove)
-							@movesarray << Move.new(@currentMove.x - 2, @currentMove.y + 1, counter, [], @currentMove)
-						end
-						if @currentMove.y - 1 >= 0
-							@currentMove.children << Move.new(@currentMove.x - 2, @currentMove.y - 1, counter, [], @currentMove)
-							@movesarray << Move.new(@currentMove.x - 2, @currentMove.y - 1, counter, [], @currentMove)
-						end
-					end
-					if @currentMove.x + 2 <= 7 
-						if @currentMove.y + 1 <= 7
-							@currentMove.children << Move.new(@currentMove.x + 2, @currentMove.y + 1, counter, [], @currentMove)
-							@movesarray << Move.new(@currentMove.x + 2, @currentMove.y + 1, counter, [], @currentMove)
-						end
-						if @currentMove.y - 1 >= 0
-							@currentMove.children << Move.new(@currentMove.x + 2, @currentMove.y - 1, counter, [], @currentMove)
-							@movesarray << Move.new(@currentMove.x + 2, @currentMove.y - 1, counter, [], @currentMove)
-						end
-					end
-					@movesChecked += 1
-				end
-				counter += 1
-			end
+	def buildTree(move_node)
+		max_depth = @max_depth
+		current_depth = move_node.depth
+		x = move_node.x 
+		y = move_node.y 
+		current_depth += 1 #building the next layer.
+		possible_moves = possible_moves_array(x, y)
+		possible_moves.each do |child|
+			child_move = Move.new(child[0], child[1], current_depth, [], move_node)
+			move_node.children << child_move
+			@nodes_counter += 1
+			if child_move.depth < @max_depth
+				buildTree(child_move)
+			end #works because the values are local to the block each time it is called, so later incremented values of current depth don't affect the other child nodes from the original which have yet to be resolved.
 		end
 	end
 
-	def inspect 
-		num = @movesarray.length - 1
-		puts "You have #{@movesarray.length} Move nodes with a maximum depth of #{@movesarray[num].depth}."
-	end
-end
+	def possible_moves_array(x, y)
+		array = []
 
-s = MoveTree.new([3,3], 4)
-s.buildTree
-s.inspect
+		#1 space up or down and 2 spaces to the right
+		x1 = x + 2
+		array.push [x1, y + 1] if x1 <= 7 && (y + 1) <= 7
+		array.push [x1, y - 1] if x1 <= 7 && (y - 1) >= 0
+
+		#1 space up or down and 2 spaces to the left
+		x2 = x - 2
+		array.push [x2, y + 1] if x2 >= 0 && (y + 1) <= 7
+		array.push [x2, y - 1] if x2 >= 0 && (y - 1) >= 0
+
+		#2 spaces up and 1 space left or right
+		y1 = y + 2
+		array.push [x - 1, y1] if x - 1 >= 0 && (y1) <= 7
+		array.push [x + 1, y1] if x + 1 <= 7 && (y1) <= 7		
+
+		#2 spaces down 1 space left or right
+		y2 = y - 2
+		array.push [x - 1, y2] if x - 1 >= 0 && (y2) >= 0
+		array.push [x + 1, y2] if x + 1 <= 7 && (y2) >= 0
+
+		return array
+	end
+
+	def inspect
+		num = @nodes_counter #number of nodes in the tree
+		puts "Your tree has #{num} Move nodes and a maximum depth of #{@max_depth}."
+	end
+
+end

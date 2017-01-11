@@ -9,7 +9,7 @@ class Queue
 	def enqueue(object)
 		@data[@end_index] = object
 		@end_index += 1
-		# return object
+		return object
 	end
 
 	def dequeue

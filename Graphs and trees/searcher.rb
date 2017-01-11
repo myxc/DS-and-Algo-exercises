@@ -1,5 +1,6 @@
 require_relative 'moves_tree'
 require_relative 'queue'
+require 'benchmark'
 
 class KnightSearcher
 	attr_accessor :startPoint, :matchingMove, :moveCounter
@@ -17,8 +18,9 @@ class KnightSearcher
 		@moveQueue.enqueue(@startPoint)
 		while !@moveQueue.empty?
 			current_comparison = @moveQueue.dequeue
+
 			if current_comparison.nil? == false
-				if [current_comparison.x.to_int, current_comparison.y.to_int] == [search_x, search_y]
+				if [current_comparison.x, current_comparison.y] == [search_x, search_y]
 					@matchingMove = current_comparison
 					output_Moves
 					return
@@ -26,7 +28,6 @@ class KnightSearcher
 					current_comparison.children.each do |child|
 						@moveQueue.enqueue(child)
 					end
-					
 				end
 			end
 		end
@@ -80,14 +81,16 @@ class KnightSearcher
 			end
 			stack_last_index = dfs_stack.length - 1
 		end
+		puts "Too few turns to move to there."
 	end
 end
 
 
-tree = MoveTree.new([3,3], 15)
-tree.buildTree
+tree = MoveTree.new([3,3], 5)
 tree.inspect
 
 searcher = KnightSearcher.new(tree)
-searcher.bfs_for([0,0])
-searcher.dfs_for([4,5])
+Benchmark.bm(10) do |x|
+	x.report('bfs:') { searcher.bfs_for([7,7]) }
+	x.report('dfs:') { searcher.dfs_for([7,7]) }
+end
