@@ -1,0 +1,33 @@
+What data structure is used to implement DFS? Depth First Search should utilize a stack because it explores as far as possible down a branch and then backtracks similar to how a stack will process the last thing added to it.
+
+What data structure is typically used to implement BFS? 
+Breadth First Searches process the closest vertices to the starting point first, and then moves outwards from there. So you're checking nodes based on the order that they appear relative to where you started which is how a Queue works, where the first in is processed first. This means it should use a queue data structure because of the first in first out behavior of queues (earlier nodes will all be checked earlier)
+
+Which one can be done recursively? (the clue should be the data structure)
+Depth based search can be done recursively. This is because it utilizes a stack data structure, so recursive calls simply add another task onto the stack in a recursive method that will be called over and over until the base case is reached, which will be resolved first, and then the rest of the stack gets done in a last in first done basis.
+
+Which one would you use to print a list of all the nodes in a tree or graph, starting with depth 1, then depth 2, then depth 3 etc.?
+You should use a Breadth first search format because that can traverse horizontally along the data structure so that it can output all the nodes in each depth level before traversing further down.
+
+What is the difference between a tree and a graph?
+The difference between a tree and a graph is that a tree consists of minimally connected nodes i.e. each node will only have 1 parent and a couple children, while in a graph each node can be connected to any/all of the other nodes.
+Trees have a root node that the entire structure begins from. Graphs have no such thing.
+Trees are hierarchical models while graphs are network models. Trees are not as complex as graphs because they don't deal with cycling, etc.
+
+Pseudocode for: 
+Searching a simple tree of nodes where each Node has an array of child nodes (some_node.children) using DFS.
+Starting at the root node, create a skipped nodes array, pick one side arbitrarily i.e. picking the first node. Then you put the remaining child nodes into the skipped array. You continue to do so until you reach the very end of the branch where the node no longer has children for you to shovel into your array. Then, you move to the last node stored inside your array, and check down that node, continuing to store it's children and check all node values that have been checked over against the value you're looking for. In this manner, you will build up a giant stack of nodes to iterate backwards through.
+
+Searching the same tree using BFS.
+Each node has an array of child nodes. Starting from the root node, check the data, and then move to the next array of nodes, iterating through each and shoveling their child nodes into another array. You can check the data while you're shoveling and you'll know when to stop when the end array is empty after shoveling.
+
+Searching a graph (represented however you feel most comfortable -- Edge List, Adjacency List or Adjacency Matrix) using DFS.
+Searching a graph means you traverse the graph moving from vertice to vertice in a systematic order.
+Using an adjacency list which is a 2d array of all the nodes, and their neighbours. 
+Start from the first node, and check if it is what we wanted. It no, then mark it as visited, and then enter the corresponding row and push all of the neighbours onto the stack. Then check the top of the stack which is one of the neighbouring nodes, by checking its value and then popping it, entering all of its neighbors, pushing them onto the stack etc.until all the nodes have been checked.
+
+Searching the same graph using BFS.
+Using an adjacency list: BFS uses queues, FIFO. Start at the first node push this into the queue, check if it has the value you're looking for, and then check the corresponding array populated with it neighbors, push them into the queue, and then pop the first element in the queue (the first node) and then move on to the next first element in the queue and check its value, its neighbors etc. Each time you check a node, mark it so that you know you've already checked it and can skip future appearances of the node (it will probably appear in the neighbours array).
+
+Improvement to above pseudocode. Mark the node as it is visited and then check all the neighboring nodes to only add the unvisited ones to teh queue.
+BFS is best for finding the shortest path regardless of whether or not the edges are weighted, because it will check the neighbors of the first earlier nodes before the later ones. 

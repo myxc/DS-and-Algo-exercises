@@ -1,0 +1,33 @@
+What are the advantages and disadvantages of using an Adjacency Matrix vs an Adjacency List relative to size and speed of common operations?
+
+Adjacency matrix uses O(n*n) memory because it is a table of all info running down two axes. It has fast lookups to check for presence or absence of a specific edge, but it is slow to iterate over all edges because of the size. 
+
+Adjacency list uses memory proportionally to the number of edges which can save memory if adjacency matrix is sparse (populated by lots of X's indicating no edge between two nodes). Finding the presence or absence of a specific edge is a bit slower because of its structure as an array of linked lists.
+
+Purely on the basis of memory, adjacency matrix occupies n^2/8 bytes of space as each bit is an entry. 
+Adjacency lists occupy 8e space where e is the number of edges. (1 byte per edge). 
+Density of graph is edges divided by maximum number of edges. Using this definition you can find the density case in which it would be better to use matrix instead of list. 
+etc. 
+
+What would the Big O be of inserting a new EDGE to:
+An Edge List? Insertion into array so O(n) time to rebuild array
+
+An Adjacency Matrix? O(n^2) Time because you rebuild array in two dimensions
+
+An Adjacency List? O(1) because you just need to index into the array and slap the edge anywhere in that list.
+
+What would the Big O be of inserting a new VERTEX to:
+An Edge List? Remake the array so O(n) or just shove it in O(1)
+An Adjacency Matrix? O(n^2) if need to make new matrix, otherwise just inserting into already made space should be O(1)
+An Adjacency List? O(1) to insert it, O(n) to find related edges and add them in
+
+What would the Big O be of REMOVING a vertex or edge from:
+An Edge List? O(n) to find it in the array
+An Adjacency Matrix? O(n) find index and remove it
+An Adjacency List? O(n) need to look through everything to find affected items, and then shift the arrays
+
+How would you find all the nodes connected to a particular vertex in:
+An Edge List? Check through the whole list
+An Adjacency Matrix? Check one row
+An Adjacency List? Check linked list/array corresponding to that vertex.
+
