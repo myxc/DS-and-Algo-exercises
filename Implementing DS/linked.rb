@@ -18,7 +18,7 @@ class LinkedList
 			@head = Node.new(data, nil)
 			@end = @head
 		else
-			new_node = Node(data,nil)
+			new_node = Node.new(data,nil)
 			@end.next = new_node
 			@end = new_node
 		end
